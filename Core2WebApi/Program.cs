@@ -19,6 +19,14 @@ namespace Core2WebApi
 
         public static IWebHost BuildWebHost(string[] args) =>
             WebHost.CreateDefaultBuilder(args)
+                .ConfigureAppConfiguration((builderContext, config) =>
+                {
+                    IHostingEnvironment env = builderContext.HostingEnvironment;
+
+                    config.AddJsonFile("miyasettings.json", optional: false, reloadOnChange: true)
+                        .AddJsonFile($"miyasettings.{env.EnvironmentName}.json", optional: true, reloadOnChange: true);
+                })
+                .UseIISIntegration()
                 .UseStartup<Startup>()
                 .Build();
     }

@@ -44,6 +44,7 @@ namespace Core2WebApi.Middlewares
                         context.Items["MiyaUserName"] = _sessionUserModel.Email;
                         context.Items["MiyaUserPassword"] = _sessionUserModel.Password;
                         context.Items["PrivateKey"] = _sessionUserModel.SecurityStamp;
+                        context.Items["UserAgent"] = _sessionUserModel.UserAgent;
                     }
                     var dene = _sessionUserModel.Email;
                     await _next(context);

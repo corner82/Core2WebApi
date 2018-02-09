@@ -2,6 +2,7 @@
 using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
+using Core2WebApi.Core.Utills;
 using Core2WebApi.Entities.Session;
 using Core2WebApi.Filters;
 using Core2WebApi.Middlewares;
@@ -12,6 +13,7 @@ using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.Logging;
 using Microsoft.Extensions.Options;
+using Wangkanai.Detection;
 
 namespace Core2WebApi
 {
@@ -66,8 +68,7 @@ namespace Core2WebApi
             services.AddMvc();
 
 
-            
-
+            services.AddScoped<RemoteAddressFinder, RemoteAddressFinder>();
         }
 
         // This method gets called by the runtime. Use this method to configure the HTTP request pipeline.
@@ -79,6 +80,8 @@ namespace Core2WebApi
             }
             //Use session
             app.UseSession();
+
+            
 
             //session user set middleware
             app.UseMiddleware<PublicKeyExistsMiddleware>();

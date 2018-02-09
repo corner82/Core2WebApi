@@ -7,16 +7,9 @@ namespace Core2WebApi.Filters
 {
     public class HmacFilterAttribute : ActionFilterAttribute
     {
-        private readonly HttpContext _httpContext;
-        public HmacFilterAttribute(HttpContext httpContext)
-        {
-            _httpContext = httpContext;
-        }
-
-
         public override void OnActionExecuting(ActionExecutingContext context)
         {
-            var user = _httpContext.GetMiyaUser();
+            //var user = _httpContext.GetMiyaUser();
             if(context!=null)
             {
 

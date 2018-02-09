@@ -33,6 +33,7 @@ namespace Core2WebApi.Controllers
         [HttpGet("{id}")]
         //[HmacFilter]
         [ServiceFilter(typeof(HmacFilterAttribute))]
+        [ServiceFilter(typeof(HmacTokenControllerAttribute))]
         public string Get(int id)
         {
             

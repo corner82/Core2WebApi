@@ -23,6 +23,8 @@ namespace Core2WebApi.Middlewares
         }
 
         public async Task Invoke(HttpContext context)
+
+
         {
             context.GetHmacToken();
             if (context.Request.Headers.ContainsKey("X-PublicKey"))

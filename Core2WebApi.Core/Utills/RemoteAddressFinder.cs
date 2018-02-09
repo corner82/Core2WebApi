@@ -1,10 +1,8 @@
 ﻿using Microsoft.AspNetCore.Http;
 using Microsoft.Extensions.Primitives;
 using System;
-using System.Collections.Generic;
 using System.Linq;
-using System.Text;
-using Core2WebUI.Core.Extensions.String;
+using Core2WebApi.Core.Extensions.String;
 
 namespace Core2WebApi.Core.Utills
 {
