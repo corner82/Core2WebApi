@@ -4,6 +4,7 @@ using Microsoft.Extensions.Caching.Distributed;
 using Newtonsoft.Json;
 using System;
 using System.Collections.Generic;
+using System.IO;
 using System.Linq;
 using System.Net.Http;
 using System.Threading.Tasks;
@@ -31,25 +32,34 @@ namespace Core2WebApi.Middlewares
             var xPublic = headerList.Where(x => x.Key == "X-PublicKey").FirstOrDefault();
             if (!string.IsNullOrEmpty(xPublic.Value))
             {
-                var userTestObj = _distributedCache.GetString(xPublic.Value);
-                _sessionUserModel = JsonConvert.DeserializeObject<SessionUserModel>(userTestObj);
-                var dene = _sessionUserModel.Email;
-                context.Items["MiyaUser"] = _sessionUserModel;
-                context.Items["PublicKey"] = xPublic.Value;
-                var xToken = headerList.Where(x => x.Key == "X-Hmac").FirstOrDefault();
-                if (!string.IsNullOrEmpty(xToken.Value))
+                var publicKey = context.Items["PublicKey"].ToString();
+                if(!string.IsNullOrEmpty(publicKey))
                 {
-                    context.Items["Token"] = xToken.Value;
+                    
+                    var userTestObj = _distributedCache.GetString(publicKey);
+                    _sessionUserModel = JsonConvert.DeserializeObject<SessionUserModel>(userTestObj);
+                    if (_sessionUserModel != null)
+                    {
+                        context.Items["MiyaUser"] = _sessionUserModel;
+                        context.Items["MiyaUserName"] = _sessionUserModel.Email;
+                        context.Items["MiyaUserPassword"] = _sessionUserModel.Password;
+                        context.Items["PrivateKey"] = _sessionUserModel.SecurityStamp;
+                    }
+                    var dene = _sessionUserModel.Email;
+                    await _next(context);
+                } else
+                {
+                    context.Response.StatusCode = 503;
+                    context.Response.ContentType = "application/json";
+                    using (StreamWriter writer = new StreamWriter(context.Response.Body))
+                    {
+                        await writer.WriteLineAsync("{Message : 'User Not Found Due To Public Key'}");
+                    };
                 }
-                
-                //await _next(context);
             } else
             {
-                //await _next(context);
+                await _next(context);
             }
-            await _next(context);
-            //await context.Response.WriteAsync(_greeter.Greet());
-           
         }
     }
 }

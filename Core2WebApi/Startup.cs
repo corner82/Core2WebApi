@@ -3,6 +3,7 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
 using Core2WebApi.Entities.Session;
+using Core2WebApi.Filters;
 using Core2WebApi.Middlewares;
 using Microsoft.AspNetCore.Builder;
 using Microsoft.AspNetCore.Hosting;
@@ -31,6 +32,8 @@ namespace Core2WebApi
         // This method gets called by the runtime. Use this method to add services to the container.
         public void ConfigureServices(IServiceCollection services)
         {
+            services.AddScoped<HmacTokenControllerAttribute>();
+            services.AddScoped<HmacFilterAttribute>();
             services.AddScoped<SessionUserModel, SessionUserModel>();
 
             // redis ayarları
@@ -62,7 +65,9 @@ namespace Core2WebApi
 
             services.AddMvc();
 
+
             
+
         }
 
         // This method gets called by the runtime. Use this method to configure the HTTP request pipeline.
@@ -77,8 +82,9 @@ namespace Core2WebApi
 
             //session user set middleware
             app.UseMiddleware<PublicKeyExistsMiddleware>();
+            app.UseMiddleware<SetUserToken>();
             app.UseMiddleware<SetUserMiddleware>();
-
+            
             app.UseMvc();
         }
     }

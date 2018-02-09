@@ -1,28 +1,36 @@
 ﻿using Core2WebApi.Entities.Session;
 using Microsoft.AspNetCore.Http;
 
+
 namespace Core2WebApi.Extensions
 {
     public static class HttpContextExtensions
     {
+
+        public  static string testDeneme(this IHttpContextAccessor httpAcces)
+        {
+            return "test";
+        }
+
         public static SessionUserModel GetMiyaUser(this HttpContext context)
         {
             if(context.Items.ContainsKey("MiyaUser"))
-                    return (SessionUserModel)context.Items["MiyaUser"];
+                            return (SessionUserModel)context.Items["MiyaUser"];
             return new SessionUserModel();
         }
 
         public static string GetPublicKey(this HttpContext context)
         {
+            
             if(context.Items.ContainsKey("PublicKey"))
-                    return context.Items["PublicKey"].ToString();
+                            return context.Items["PublicKey"].ToString();
             return "";
         }
 
         public static string GetUserName(this HttpContext context)
         {
             if(context.Items.ContainsKey("MiyaUserName"))
-                    return context.Items["MiyaUserName"].ToString();
+                            return context.Items["MiyaUserName"].ToString();
             return "";
         }
 
@@ -40,9 +48,18 @@ namespace Core2WebApi.Extensions
             return "";
         }
 
-        public static string GetToken(this HttpContext context)
+        public static string GetHmacToken(this HttpContext context)
         {
-            return context.Items["PrivateKey"].ToString();
+            if(context.Items.ContainsKey("HmacToken"))
+                            return context.Items["HmacToken"].ToString();
+            return "";
+        }
+
+        public static SessionUserModel GetUser(this HttpContext context)
+        {
+            if(context.Items.ContainsKey("MiyaUser"))
+                            return (SessionUserModel)context.Items["MiyaUser"];
+            return default(SessionUserModel);
         }
     }
 }

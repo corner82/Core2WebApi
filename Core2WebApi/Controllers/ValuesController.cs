@@ -31,9 +31,11 @@ namespace Core2WebApi.Controllers
 
         // GET api/values/5
         [HttpGet("{id}")]
-        [HmacFilter]
+        //[HmacFilter]
+        [ServiceFilter(typeof(HmacFilterAttribute))]
         public string Get(int id)
         {
+            
             var user = HttpContext.Items["testUser"];
             var user2 = HttpContext.GetMiyaUser();
             var userName = user2.Email;
