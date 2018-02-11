@@ -18,7 +18,7 @@ namespace Core2WebApi.Middlewares
         {
             var headerList = context.Request.Headers.ToList();
             var xHmac = headerList.Where(x => x.Key == "X-Hmac").FirstOrDefault();
-            if(!string.IsNullOrEmpty(xHmac.Value))
+            if(!string.IsNullOrEmpty(xHmac.Value) && !string.IsNullOrEmpty(xHmac.Key))
             {
                 context.Items["HmacToken"] = xHmac.Value;
             }

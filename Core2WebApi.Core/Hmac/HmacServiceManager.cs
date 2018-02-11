@@ -8,8 +8,8 @@ namespace Core2WebApi.Core.Hmac
     public class HmacServiceManager : HmacServiceManagerBase
     {
         //private const string _alg = "HmacSHA256"; deprecated
-        //private const string _salt = "rz8LuOtFBXphj9WQfvFh"; // Generated at https://www.random.org/strings
-        private const string _salt = "rz8LuOtFBXphj9WQf"; 
+        private const string _salt = "rz8LuOtFBXphj9WQfvFh"; // Generated at https://www.random.org/strings
+        //private const string _salt = "rz8LuOtFBXphj9WQf"; 
         private const int _expirationMinutes = 10;
 
         private string CreateToken(string message, string secret)
